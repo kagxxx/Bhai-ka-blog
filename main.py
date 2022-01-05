@@ -95,14 +95,14 @@ def dashboard():
         return render_template("dashboard.html", params=params, posts=posts)
     if request.method == 'POST':
         username = request.form.get('uname')
-        userpass = request.form.get('pass')
+        userpass = request.form.get('Pass')
         if username == params['admin_user'] and userpass == params['admin_password']:
             # set the session variable
             session['user'] = username
             posts = Posts.query.all()
             return render_template("dashboard.html", params=params, posts=posts)
-    posts = Posts.query.all()
-    return render_template('dashboard.html', params=params, posts=posts)
+
+    return render_template('login.html', params=params)
 
 
 @app.route("/edit/<string:sno>", methods=["GET", "POST"])
@@ -141,6 +141,7 @@ def uploader():
 
 @app.route("/logout")
 def logout():
+    session.pop('user')
     return redirect('/dashboard')
 
 @app.route("/delete/<string:sno>", methods=['GET', 'POST'])
